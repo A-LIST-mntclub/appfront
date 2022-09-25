@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'models/shell.dart';
+import 'models/series.dart';
+
 
 class Entry extends StatefulWidget {
   @override
@@ -21,6 +24,7 @@ class _EntryState extends State<Entry> {
   }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
@@ -96,8 +100,9 @@ class _EntryState extends State<Entry> {
                         // the form is invalid.
                         if (_formKey.currentState!.validate()) {
                           // Process data.
-                          test.add(myController.text);
-                          print(test.last);
+                          Series test1 = Series('abc','blah','9/25/22','https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80',true);
+
+                          Navigator.pop(context, test1);
                         }
                       },
                       child: const Text('Submit'),

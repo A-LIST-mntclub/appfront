@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'entry.dart';
+import 'models/shell.dart';
+import 'models/series.dart';
+
 
 class HomePage extends StatefulWidget {
 
@@ -7,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 
-Card addEntry(int number){
+Card addEntry(){
   return Card(
     color: Colors.grey,
     margin: EdgeInsets.symmetric(vertical: 5.0),
@@ -31,7 +35,7 @@ Card addEntry(int number){
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-                'https://i.pinimg.com/originals/e0/07/45/e00745be0b633770175b55dcfe2ade9e.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/4/44/Cat_img.jpg',
                 fit: BoxFit.fill
             ),
           ),
@@ -43,23 +47,40 @@ Card addEntry(int number){
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Series Name'
-            ),
+            Text('Series Name:'),
             Text(
-                'Chapter: $number'
-            ),
+                'Chapter:'),
             Text(
-                'Date'
-            )
+                'Date')
           ],
         ),
       ],
     ),
   );
 }
-
+Shell collection = Shell();
 class _HomePageState extends State<HomePage> {
   List<Widget> items = [SizedBox(height: 3.0,)];
+  //this add a new card
+  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final result = await Navigator.push(
+      context,
+      // Create the SelectionScreen in the next step.
+      MaterialPageRoute(builder: (context) => Entry()),
+    );
+    print('check1');
+    print(collection.list.length);
+    setState(() {
+      collection.list.add(result);
+    });
+    print('check2');
+    print(collection.list.length);
+    items.add(addEntry());
+
+  }
+  Future<void> addCardUpdate() async {}
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -77,6 +98,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               FloatingActionButton.extended(
+                heroTag: "Piaro",
                 backgroundColor: Colors.blue,
                 splashColor: Colors.green,
                 icon: Icon(
@@ -84,13 +106,18 @@ class _HomePageState extends State<HomePage> {
                 ),
                 label: const Text('Add New Entry'),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/entry');
+                  setState(() {
+                    print('checkpoint1');
+                    _navigateAndDisplaySelection(context);
+                    print('checkpoint2');
+                  });
                 },
               ),
               FloatingActionButton(
+                heroTag: "Asmophel",
                 onPressed: () {
                   setState(() {
-                    items.add(addEntry(4));
+                    items.add(addEntry());
                   });
                 },
                 backgroundColor: Colors.blue,
@@ -112,6 +139,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
 
 
 
