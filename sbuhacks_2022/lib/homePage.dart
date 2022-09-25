@@ -5,6 +5,7 @@ import 'models/series.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'request.dart';
+import 'package:dio/dio.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -65,12 +66,10 @@ Shell collection = Shell();
 
 class _HomePageState extends State<HomePage> {
 
-  Future<Album> getUpdate() async {
+  Future<Album> getUpdate(String url) async {
     final response = await http.post(
       Uri.parse('http://localhost:3000/'),
-        body: jsonEncode(<String, String>{  '1': "https://mangasee123.com/manga/The-Outcast",
-        '2': "https://mangasee123.com/manga/Kanojo-Wa-Sore-Wo-Gaman-Dekinai",
-        '3': "https://mangasee123.com/manga/Shikabane-Gatana",}),
+        body: jsonEncode(<String, String>{ 'url' : url,}),
     );
     if (response.statusCode == 200) {
       return Album.fromJson(jsonDecode(response.body));
@@ -135,11 +134,48 @@ class _HomePageState extends State<HomePage> {
               FloatingActionButton(
                 heroTag: "Asmophel",
                 onPressed: () {
-                  getUpdate();
+                  collection.list.first.toJson();
+                  List<String> tempL= [];
+
+                  for (int i = 0; i < collection.list.length; i++){
+                    tempL.add(jsonEncode(collection.list[i]));
+                  }
+                  Future<void> createSeries(Series list) async{
+                    final response = await http.post(
+                      Uri.parse('http://localhost:3000/'),
+                        headers: {
+                          "Content-Type": "application/json"
+                        },
+                      body: jsonEncode(list),
+                    );
+
+                    if (response.statusCode == 200) {
+                      // If the server did return a 201 CREATED response,
+                      // then parse the JSON.
+                      setState(() {
+                        collection.list.first.chapterImg = ((jsonDecode(response.body))[0]['url']);
+                        collection.list.first.chapterName = ((jsonDecode(response.body))[0]['name']);
+                        collection.list.first.chapterDate = ((jsonDecode(response.body))[0]['date']);
+                        collection.list.first.chapterCount = ((jsonDecode(response.body))[0]['Chapter'].toString());
+                        items.removeAt(1);
+                        items.add(addEntry(collection.list.first));
+
+
+                      });
+
+
+                      print(collection.list.first.chapterImg);
+                    } else {
+                      print(response.statusCode);
+                      // If the server did not return a 201 CREATED response,
+                      // then throw an exception.
+                      throw Exception('Failed to create album.');
+                    }
+                  }
+                  createSeries(collection.list.first);
+
                   //                  String jsonUser = jsonEncode(collection);
                   //                   print(jsonUser);
-                  setState(() {
-                  });
                 },
                 backgroundColor: Colors.blue,
                 splashColor:  Colors.green,

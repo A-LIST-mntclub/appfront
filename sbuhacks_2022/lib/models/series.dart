@@ -4,9 +4,23 @@ class Series {
   String chapterCount;
   String chapterDate;
   String chapterImg;
-  bool isRead;
 
   ///this is all of the data we need to populate the main page. we will make an array that contains multiple objects of "series"
-  Series(this.chapterName, this.chapterLink, this.chapterCount, this.chapterDate, this.chapterImg, this.isRead);
+  Map<String, dynamic> toJson() => {
+    "chapterLink": chapterLink,
+  };
+  Series(this.chapterName, this.chapterLink, this.chapterCount, this.chapterDate, this.chapterImg);
+/*
+  factory Series.fromJson(Map<String, dynamic> json) {
+    return Series(
+      chapterName: json["chapterName"],
+      chapterCount: json["chapterLink"],
+      chapterDate: json["chapterDate"],
+      chapterImg: json["chapterImg"],
+    );
+
+  }
+
+ */
 
 }
