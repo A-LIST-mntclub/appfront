@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-  List<Widget> items = [];
+  List<Widget> items = [SizedBox(height: 3.0,)];
   //this add a new card
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
@@ -135,7 +135,12 @@ class _HomePageState extends State<HomePage> {
                 heroTag: "Asmophel",
                 onPressed: () {
                   collection.list.first.toJson();
-                  Future<void> createSeries(Series list, int index) async{
+                  List<String> tempL= [];
+
+                  for (int i = 0; i < collection.list.length; i++){
+                    tempL.add(jsonEncode(collection.list[i]));
+                  }
+                  Future<void> createSeries(Series list) async{
                     final response = await http.post(
                       Uri.parse('http://localhost:3000/'),
                         headers: {
@@ -148,15 +153,18 @@ class _HomePageState extends State<HomePage> {
                       // If the server did return a 201 CREATED response,
                       // then parse the JSON.
                       setState(() {
-                        collection.list[index].chapterImg = ((jsonDecode(response.body))[0]['url']);
-                        collection.list[index].chapterName = ((jsonDecode(response.body))[0]['name']);
-                        collection.list[index].chapterDate = ((jsonDecode(response.body))[0]['date']);
-                        collection.list[index].chapterCount = ((jsonDecode(response.body))[0]['Chapter'].toString());
-                        items[index] = (addEntry(collection.list[index]));
+                        collection.list.first.chapterImg = ((jsonDecode(response.body))[0]['url']);
+                        collection.list.first.chapterName = ((jsonDecode(response.body))[0]['name']);
+                        collection.list.first.chapterDate = ((jsonDecode(response.body))[0]['date']);
+                        collection.list.first.chapterCount = ((jsonDecode(response.body))[0]['Chapter'].toString());
+                        items.removeAt(1);
+                        items.add(addEntry(collection.list.first));
+
 
                       });
 
 
+                      print(collection.list.first.chapterImg);
                     } else {
                       print(response.statusCode);
                       // If the server did not return a 201 CREATED response,
@@ -164,9 +172,7 @@ class _HomePageState extends State<HomePage> {
                       throw Exception('Failed to create album.');
                     }
                   }
-                  for (int i = 0; i < collection.list.length;i++){
-                    createSeries(collection.list[i],i);
-                  }
+                  createSeries(collection.list.first);
 
                   //                  String jsonUser = jsonEncode(collection);
                   //                   print(jsonUser);
