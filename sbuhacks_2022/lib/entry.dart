@@ -101,9 +101,9 @@ class _EntryState extends State<Entry> {
                         if (_formKey.currentState!.validate()) {
                           // Process data.
                           Series test1 = Series('abc',myController.text,'2','9/25/22','https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80');
-
                           Navigator.pop(context, test1);
                         }
+
                       },
                       child: const Text('Submit'),
                     ),
