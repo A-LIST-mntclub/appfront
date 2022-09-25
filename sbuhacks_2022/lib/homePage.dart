@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'entry.dart';
 import 'models/shell.dart';
 import 'models/series.dart';
-<<<<<<< Updated upstream
-=======
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'request.dart';
 import 'globals.dart' as globals;
->>>>>>> Stashed changes
 
 
 class HomePage extends StatefulWidget {
@@ -18,13 +15,13 @@ class HomePage extends StatefulWidget {
 }
 
 
-Card addEntry(){
+Card addEntry(Series entry){
   return Card(
     color: Colors.grey,
     margin: EdgeInsets.symmetric(vertical: 5.0),
     shape: RoundedRectangleBorder(
       side: BorderSide(
-        color: Colors.white,
+        color: Colors.black,
       ),
       borderRadius: const BorderRadius.all(Radius.circular(12)),
     ),
@@ -42,7 +39,7 @@ Card addEntry(){
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-            'https://upload.wikimedia.org/wikipedia/commons/4/44/Cat_img.jpg',
+            entry.chapterImg,
                 fit: BoxFit.fill
             ),
           ),
@@ -54,22 +51,17 @@ Card addEntry(){
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Series Name:'),
+            Text('Series Name:' + entry.chapterName),
             Text(
-                'Chapter:'),
+                'Chapter:' + entry.chapterCount),
             Text(
-                'Date')
+                'Date: ' + entry.chapterDate)
           ],
         ),
       ],
     ),
   );
 }
-<<<<<<< Updated upstream
-Shell collection = Shell();
-class _HomePageState extends State<HomePage> {
-  List<Widget> items = [SizedBox(height: 3.0,)];
-=======
 
 
 class _HomePageState extends State<HomePage> {
@@ -88,7 +80,6 @@ class _HomePageState extends State<HomePage> {
   }
 
 
->>>>>>> Stashed changes
   //this add a new card
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
@@ -104,16 +95,10 @@ class _HomePageState extends State<HomePage> {
       globals.collection.list.add(result);
     });
     print('check2');
-<<<<<<< Updated upstream
-    print(collection.list.length);
-    items.add(addEntry());
-=======
     print(globals.collection.list.length);
     globals.items.add(addEntry(globals.collection.list.first));
->>>>>>> Stashed changes
 
   }
-  Future<void> addCardUpdate() async {}
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -150,11 +135,6 @@ class _HomePageState extends State<HomePage> {
               FloatingActionButton(
                 heroTag: "Asmophel",
                 onPressed: () {
-<<<<<<< Updated upstream
-                  setState(() {
-                    items.add(addEntry());
-                  });
-=======
                   globals.collection.list.first.toJson();
                   Future<void> createSeries(Series list, int index) async{
                     final response = await http.post(
@@ -191,7 +171,6 @@ class _HomePageState extends State<HomePage> {
 
                   //                  String jsonUser = jsonEncode(collection);
                   //                   print(jsonUser);
->>>>>>> Stashed changes
                 },
                 backgroundColor: Colors.white24,
                 splashColor:  Colors.black26,
