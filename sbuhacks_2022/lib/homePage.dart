@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
       home: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text('App Name'
+          title: Text('A-List'
           ),
         ),
         backgroundColor: Colors.lightBlueAccent,
@@ -101,9 +101,11 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: SafeArea(
-          child: Column(
+          child: SingleChildScrollView(
+            child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: items,
+            ),
           ),
         ),
       ),
