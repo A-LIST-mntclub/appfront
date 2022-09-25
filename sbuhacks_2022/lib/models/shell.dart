@@ -1,5 +1,5 @@
 class Shell {
-  List list;
+  List? list;
   ///this is the shell we will be passing to the backend API
-  Shell(this.List)
+  Shell({this.list});
 }

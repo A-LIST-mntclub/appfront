@@ -7,7 +7,7 @@ class HomePage extends StatefulWidget {
 }
 
 
-Card addEntry(){
+Card addEntry(int number){
   return Card(
     color: Colors.grey,
     margin: EdgeInsets.symmetric(vertical: 5.0),
@@ -46,7 +46,7 @@ Card addEntry(){
             Text('Series Name'
             ),
             Text(
-                'Chapter'
+                'Chapter: $number'
             ),
             Text(
                 'Date'
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
               FloatingActionButton(
                 onPressed: () {
                   setState(() {
-                    items.add(addEntry());
+                    items.add(addEntry(4));
                   });
                 },
                 backgroundColor: Colors.blue,
