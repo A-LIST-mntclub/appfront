@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'entry.dart';
 import 'models/shell.dart';
 import 'models/series.dart';
+<<<<<<< Updated upstream
+=======
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'request.dart';
-import 'package:dio/dio.dart';
+import 'globals.dart' as globals;
+>>>>>>> Stashed changes
 
 
 class HomePage extends StatefulWidget {
@@ -15,13 +18,13 @@ class HomePage extends StatefulWidget {
 }
 
 
-Card addEntry(Series entry){
+Card addEntry(){
   return Card(
     color: Colors.grey,
     margin: EdgeInsets.symmetric(vertical: 5.0),
     shape: RoundedRectangleBorder(
       side: BorderSide(
-        color: Colors.black,
+        color: Colors.white,
       ),
       borderRadius: const BorderRadius.all(Radius.circular(12)),
     ),
@@ -39,7 +42,7 @@ Card addEntry(Series entry){
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-            entry.chapterImg,
+            'https://upload.wikimedia.org/wikipedia/commons/4/44/Cat_img.jpg',
                 fit: BoxFit.fill
             ),
           ),
@@ -51,18 +54,23 @@ Card addEntry(Series entry){
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Series Name:' + entry.chapterName),
+            Text('Series Name:'),
             Text(
-                'Chapter:' + entry.chapterCount),
+                'Chapter:'),
             Text(
-                'Date: ' + entry.chapterDate)
+                'Date')
           ],
         ),
       ],
     ),
   );
 }
+<<<<<<< Updated upstream
 Shell collection = Shell();
+class _HomePageState extends State<HomePage> {
+  List<Widget> items = [SizedBox(height: 3.0,)];
+=======
+
 
 class _HomePageState extends State<HomePage> {
 
@@ -79,7 +87,8 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-  List<Widget> items = [SizedBox(height: 3.0,)];
+
+>>>>>>> Stashed changes
   //this add a new card
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
@@ -90,25 +99,32 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) => Entry()),
     );
     print('check1');
-    print(collection.list.length);
+    print(globals.collection.list.length);
     setState(() {
-      collection.list.add(result);
+      globals.collection.list.add(result);
     });
     print('check2');
+<<<<<<< Updated upstream
     print(collection.list.length);
-    items.add(addEntry(collection.list.first));
+    items.add(addEntry());
+=======
+    print(globals.collection.list.length);
+    globals.items.add(addEntry(globals.collection.list.first));
+>>>>>>> Stashed changes
 
   }
+  Future<void> addCardUpdate() async {}
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
           elevation: 0.0,
-          title: Text('A-List'
+          title: Text('A-List', style: TextStyle(color: Colors.black),
           ),
         ),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.black26,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -117,8 +133,8 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               FloatingActionButton.extended(
                 heroTag: "Piaro",
-                backgroundColor: Colors.blue,
-                splashColor: Colors.green,
+                backgroundColor: Colors.white24,
+                splashColor: Colors.white,
                 icon: Icon(
                     Icons.add
                 ),
@@ -134,13 +150,13 @@ class _HomePageState extends State<HomePage> {
               FloatingActionButton(
                 heroTag: "Asmophel",
                 onPressed: () {
-                  collection.list.first.toJson();
-                  List<String> tempL= [];
-
-                  for (int i = 0; i < collection.list.length; i++){
-                    tempL.add(jsonEncode(collection.list[i]));
-                  }
-                  Future<void> createSeries(Series list) async{
+<<<<<<< Updated upstream
+                  setState(() {
+                    items.add(addEntry());
+                  });
+=======
+                  globals.collection.list.first.toJson();
+                  Future<void> createSeries(Series list, int index) async{
                     final response = await http.post(
                       Uri.parse('http://localhost:3000/'),
                         headers: {
@@ -153,18 +169,15 @@ class _HomePageState extends State<HomePage> {
                       // If the server did return a 201 CREATED response,
                       // then parse the JSON.
                       setState(() {
-                        collection.list.first.chapterImg = ((jsonDecode(response.body))[0]['url']);
-                        collection.list.first.chapterName = ((jsonDecode(response.body))[0]['name']);
-                        collection.list.first.chapterDate = ((jsonDecode(response.body))[0]['date']);
-                        collection.list.first.chapterCount = ((jsonDecode(response.body))[0]['Chapter'].toString());
-                        items.removeAt(1);
-                        items.add(addEntry(collection.list.first));
-
+                        globals.collection.list[index].chapterImg = ((jsonDecode(response.body))[0]['url']);
+                        globals.collection.list[index].chapterName = ((jsonDecode(response.body))[0]['name']);
+                        globals.collection.list[index].chapterDate = ((jsonDecode(response.body))[0]['date']);
+                        globals.collection.list[index].chapterCount = ((jsonDecode(response.body))[0]['Chapter'].toString());
+                        globals.items[index] = (addEntry(globals.collection.list[index]));
 
                       });
 
 
-                      print(collection.list.first.chapterImg);
                     } else {
                       print(response.statusCode);
                       // If the server did not return a 201 CREATED response,
@@ -172,13 +185,16 @@ class _HomePageState extends State<HomePage> {
                       throw Exception('Failed to create album.');
                     }
                   }
-                  createSeries(collection.list.first);
+                  for (int i = 0; i < globals.collection.list.length;i++){
+                    createSeries(globals.collection.list[i],i);
+                  }
 
                   //                  String jsonUser = jsonEncode(collection);
                   //                   print(jsonUser);
+>>>>>>> Stashed changes
                 },
-                backgroundColor: Colors.blue,
-                splashColor:  Colors.green,
+                backgroundColor: Colors.white24,
+                splashColor:  Colors.black26,
                 child: Icon(Icons.refresh),
               )
             ],
@@ -188,7 +204,7 @@ class _HomePageState extends State<HomePage> {
           child: SingleChildScrollView(
             child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: items,
+            children: globals.items,
             ),
           ),
         ),
